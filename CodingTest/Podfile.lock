@@ -1,0 +1,16 @@
+PODS:
+  - FoursquareAPIClient (4.0.1)
+
+DEPENDENCIES:
+  - FoursquareAPIClient
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - FoursquareAPIClient
+
+SPEC CHECKSUMS:
+  FoursquareAPIClient: 12fbe6aa7b11485ee8314c7590458b6baa226f4e
+
+PODFILE CHECKSUM: 0526f8c706eeea5e98c795461ce472cd653015bc
+
+COCOAPODS: 1.5.3
