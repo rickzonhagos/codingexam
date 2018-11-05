@@ -20,7 +20,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initLocationManager()
+        checkForLocationServices()
         initVIPER()
         
     }
@@ -31,6 +31,44 @@ class ListViewController: UIViewController {
     }
 }
 extension ListViewController {
+    func checkForLocationServices() {
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .notDetermined, .restricted, .denied:
+                let alertController : UIAlertController = UIAlertController(title: "Ooppss", message: Constants.Message.AllowLocaionService, preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "Ok", style: .default) { (action) in
+                    
+                }
+                let goToSettings = UIAlertAction(title: "Settings", style: .default) { (action) in
+                    if let url = URL(string: UIApplicationOpenSettingsURLString) {
+                        
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                }
+                
+                alertController.addAction(okAction)
+                alertController.addAction(goToSettings)
+                self.present(alertController, animated: true, completion: nil)
+            case .authorizedAlways, .authorizedWhenInUse:
+                initLocationManager()
+            }
+        } else {
+            let alertController : UIAlertController = UIAlertController(title: "Ooppss", message: Constants.Message.TurnOnLocation, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default) { (action) in
+                
+            }
+            let goToSettings = UIAlertAction(title: "Settings", style: .default) { (action) in
+                if let url = URL(string: "App-Prefs:root=Privacy&path=LOCATION_SERVICES") {
+                    
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            }
+            
+            alertController.addAction(okAction)
+            alertController.addAction(goToSettings)
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
     func initLocationManager(){
         self.locationManager = CLLocationManager()
         self.locationManager.delegate = self
@@ -62,6 +100,7 @@ extension ListViewController : CLLocationManagerDelegate {
             
         }
         alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 extension ListViewController : ListViewProtocol {
